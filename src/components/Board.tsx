@@ -1,45 +1,52 @@
-import React, { useRef, useEffect } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useSpring, MotionValue } from 'framer-motion';
 import { useGesture } from '@use-gesture/react';
+import type { NoteData } from '../types';
+import { StickyNote } from './StickyNote';
 
-export const Board: React.FC = () => {
+interface Props {
+  cameraX: MotionValue<number>;
+  cameraY: MotionValue<number>;
+  cameraScale: MotionValue<number>;
+  notes: NoteData[];
+  updateNote: (id: string, data: Partial<NoteData>) => void;
+  bringToFront: (id: string) => void;
+}
+
+export const Board: React.FC<Props> = ({ 
+  cameraX, cameraY, cameraScale, 
+  notes, updateNote, bringToFront 
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Motion values for pan and zoom
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const scale = useMotionValue(1);
-
   // Add some spring physics to the panning for a smoother feel
-  const springConfig = { damping: 25, stiffness: 120 };
-  const springX = useSpring(x, springConfig);
-  const springY = useSpring(y, springConfig);
-  const springScale = useSpring(scale, springConfig);
+  const springConfig = { damping: 40, stiffness: 100 }; // Slower, heavier spring
+  const springX = useSpring(cameraX, springConfig);
+  const springY = useSpring(cameraY, springConfig);
+  const springScale = useSpring(cameraScale, springConfig);
 
   useGesture(
     {
-      onDrag: ({ offset: [dx, dy] }) => {
-        x.set(dx);
-        y.set(dy);
+      onDrag: ({ delta: [dx, dy] }) => {
+        // Reduced pan sensitivity for heavy feel
+        cameraX.set(cameraX.get() + (dx * 0.5));
+        cameraY.set(cameraY.get() + (dy * 0.5));
       },
       onPinch: ({ offset: [s] }) => {
-        scale.set(s);
+        cameraScale.set(s);
       },
       onWheel: ({ event, delta: [dx, dy], ctrlKey }) => {
-        // Prevent default browser scrolling/zooming
         event.preventDefault();
         
         if (ctrlKey) {
-            // Zooming (using pinch-to-zoom on trackpad sends wheel with ctrlKey)
-            const currentScale = scale.get();
-            // Using a smaller multiplier and multiplicative scaling makes zooming much smoother
-            const zoomFactor = Math.exp(-dy * 0.002);
+            const currentScale = cameraScale.get();
+            // Greatly reduced zoom sensitivity
+            const zoomFactor = Math.exp(-dy * 0.001);
             const newScale = Math.max(0.1, Math.min(currentScale * zoomFactor, 5));
-            scale.set(newScale);
+            cameraScale.set(newScale);
         } else {
-            // Panning
-            x.set(x.get() - dx);
-            y.set(y.get() - dy);
+            cameraX.set(cameraX.get() - (dx * 0.5));
+            cameraY.set(cameraY.get() - (dy * 0.5));
         }
       }
     },
@@ -47,10 +54,10 @@ export const Board: React.FC = () => {
       target: containerRef,
       eventOptions: { passive: false },
       drag: {
-         from: () => [x.get(), y.get()]
+         from: () => [cameraX.get(), cameraY.get()]
       },
       pinch: {
-         from: () => [scale.get(), 0],
+         from: () => [cameraScale.get(), 0],
          scaleBounds: { min: 0.1, max: 5 },
       }
     }
@@ -70,10 +77,14 @@ export const Board: React.FC = () => {
           scale: springScale,
         }}
       >
-        <div className="demo-note">
-           <h1>Welcome to Sticky Board!</h1>
-           <p>Pan around by dragging, zoom with pinch or ctrl+scroll.</p>
-        </div>
+        {notes.map(note => (
+           <StickyNote 
+              key={note.id} 
+              note={note} 
+              updateNote={updateNote} 
+              bringToFront={bringToFront} 
+           />
+        ))}
       </motion.div>
     </div>
   );

@@ -2,11 +2,21 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, StickyNote, Image as ImageIcon, Heart } from 'lucide-react';
 
-export const Toolbar: React.FC = () => {
+interface Props {
+  onAddNote: () => void;
+}
+
+export const Toolbar: React.FC<Props> = ({ onAddNote }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="toolbar-container">
+    <motion.div 
+      className="toolbar-container"
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 50 }}
+      transition={{ type: 'spring', damping: 20 }}
+    >
       <motion.div
         animate={{
           width: isOpen ? 260 : 64,
@@ -30,12 +40,12 @@ export const Toolbar: React.FC = () => {
               exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.2 }}
               className="toolbar-menu"
-              style={{ paddingRight: 0 }} // overriding padding to keep divider tight
+              style={{ paddingRight: 0 }}
             >
               <button 
                 className="toolbar-icon-btn" 
                 onClick={() => {
-                  console.log('Add sticky note');
+                  onAddNote();
                   setIsOpen(false);
                 }}
                 title="Add Sticky Note"
@@ -68,13 +78,11 @@ export const Toolbar: React.FC = () => {
           )}
         </AnimatePresence>
 
-        {/* The persistent toggle button */}
         <button
           className="toolbar-btn primary"
           onClick={() => setIsOpen(!isOpen)}
           style={{ width: 64, flexShrink: 0, borderRadius: '50%' }}
         >
-          {/* We rotate the icon inside the button by 135 degrees to turn it into an X with a nice spin */}
           <motion.div
             animate={{ rotate: isOpen ? 135 : 0 }}
             transition={{ type: 'spring', stiffness: 200, damping: 15 }}
@@ -85,6 +93,6 @@ export const Toolbar: React.FC = () => {
         </button>
 
       </motion.div>
-    </div>
+    </motion.div>
   );
 };

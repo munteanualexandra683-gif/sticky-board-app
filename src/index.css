@@ -66,21 +66,38 @@ body, html {
   pointer-events: none;
 }
 
-.demo-note {
-  position: relative;
+.sticky-note {
   background-color: var(--note-yellow);
-  padding: 32px;
-  border-radius: 8px;
+  width: 240px;
+  height: 240px;
+  padding: 24px;
+  border-radius: 4px;
   box-shadow: var(--shadow-md);
-  width: 320px;
-  text-align: center;
-  cursor: default; /* So it doesn't look like we're grabbing the board when hovering note */
-  pointer-events: auto;
+  /* A subtle paper gradient to make it feel premium */
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+  display: flex;
+  flex-direction: column;
+  cursor: grab;
+  /* Very slight rotation for a physical feel */
+  /* We don't apply it here because Framer Motion controls transform, but we could add a nested div */
 }
 
-.demo-note h1 {
-  margin-top: 0;
-  font-size: 24px;
+.sticky-note:active {
+  cursor: grabbing;
+}
+
+.sticky-note-textarea {
+  flex-grow: 1;
+  width: 100%;
+  border: none;
+  background: transparent;
+  resize: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--text-main);
+  outline: none;
+  cursor: text;
 }
 
 /* --- Toolbar Styles --- */
@@ -165,5 +182,162 @@ body, html {
 .close-btn:hover {
   color: #333;
   background-color: #ffe6e6; /* Soft red tint when closing */
-  border-color: transparent;
+}
+
+/* --- Note Editor Overlay --- */
+.editor-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-content {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editor-note {
+  width: 400px;
+  height: 400px;
+  box-shadow: 0 40px 60px -10px rgba(0,0,0,0.3);
+  cursor: default;
+}
+.editor-note:active {
+  cursor: default;
+}
+.editor-note .sticky-note-textarea {
+  font-size: 24px;
+}
+
+.editor-toolbar-wrapper {
+  padding-bottom: 48px;
+  display: flex;
+  justify-content: center;
+}
+
+.editor-toolbar {
+  background-color: #ffffff;
+  min-height: 64px;
+  border-radius: 32px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+}
+
+.toolbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  height: 100%;
+  gap: 16px;
+  white-space: nowrap;
+}
+
+.editor-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.editor-icon-btn:hover {
+  background-color: var(--canvas-bg);
+  transform: translateY(-2px);
+}
+
+.editor-icon-btn.primary {
+  color: #10B981; /* Green check */
+}
+.editor-icon-btn.primary:hover {
+  background-color: #ECFDF5;
+}
+
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s;
+}
+.color-swatch:hover {
+  transform: scale(1.1);
+}
+
+.custom-color-wrapper {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--canvas-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.2s;
+  border: 2px dashed #ccc;
+}
+.custom-color-wrapper:hover {
+  transform: scale(1.1);
+  border-color: #aaa;
+}
+
+.custom-color-icon {
+  color: #666;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hex-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: var(--canvas-bg);
+  border-radius: 12px;
+  padding: 8px 16px;
+}
+
+.hex-hash {
+  color: #888;
+  font-weight: 500;
+  margin-right: 8px;
+}
+
+.hex-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  color: var(--text-main);
+  width: 100%;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* react-colorful overrides */
+.react-colorful {
+  width: 180px !important;
+  height: 180px !important;
+}
+.react-colorful__pointer {
+  width: 24px !important;
+  height: 24px !important;
 }
