@@ -1,0 +1,169 @@
+:root {
+  --canvas-bg: #F5F1E7; /* Light brown / warm beige */
+  --canvas-dot: rgba(0, 0, 0, 0.05); /* subtle dots */
+  --text-main: #2C2A26;
+  --note-yellow: #FFF9B1;
+  --shadow-base: rgba(0, 0, 0, 0.08);
+  --shadow-sm: 0 4px 6px -1px var(--shadow-base), 0 2px 4px -1px var(--shadow-base);
+  --shadow-md: 0 10px 15px -3px var(--shadow-base), 0 4px 6px -2px var(--shadow-base);
+  --shadow-lg: 0 20px 25px -5px var(--shadow-base), 0 10px 10px -5px var(--shadow-base);
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden; /* Prevent native scrolling */
+  font-family: var(--font-sans);
+  color: var(--text-main);
+  background-color: var(--canvas-bg);
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.board-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--canvas-bg);
+  cursor: grab;
+}
+
+.board-container:active {
+  cursor: grabbing;
+}
+
+.board-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.board-canvas::before {
+  content: '';
+  position: absolute;
+  top: -50000px;
+  left: -50000px;
+  width: 100000px;
+  height: 100000px;
+  background-image: radial-gradient(var(--canvas-dot) 2px, transparent 2px);
+  background-size: 40px 40px;
+  background-position: center;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.demo-note {
+  position: relative;
+  background-color: var(--note-yellow);
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  width: 320px;
+  text-align: center;
+  cursor: default; /* So it doesn't look like we're grabbing the board when hovering note */
+  pointer-events: auto;
+}
+
+.demo-note h1 {
+  margin-top: 0;
+  font-size: 24px;
+}
+
+/* --- Toolbar Styles --- */
+.toolbar-container {
+  position: fixed; /* Fixed so it stays in the corner while canvas pans */
+  bottom: 32px;
+  right: 32px;
+  z-index: 100;
+}
+
+.toolbar-bg {
+  background-color: #ffffff;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* Initial state */
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
+}
+
+.toolbar-btn.primary {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background-color 0.2s;
+}
+
+.toolbar-btn.primary:hover {
+  background-color: #f9f9f9;
+}
+
+.toolbar-menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 12px;
+}
+
+.toolbar-icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+}
+
+.toolbar-icon-btn:hover {
+  background-color: var(--canvas-bg);
+  transform: translateY(-3px) scale(1.05); /* Fun hover lift */
+  border-color: #e5e5e5;
+}
+
+.toolbar-divider {
+  width: 2px;
+  height: 24px;
+  background-color: #e5e5e5;
+  margin: 0 4px;
+  border-radius: 1px;
+}
+
+.close-btn {
+  color: #999;
+}
+.close-btn:hover {
+  color: #333;
+  background-color: #ffe6e6; /* Soft red tint when closing */
+  border-color: transparent;
+}
