@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Palette, Type, Check, ArrowLeft, Plus } from 'lucide-react';
+import { HexColorPicker } from 'react-colorful';
 import type { NoteData } from '../types';
 
 interface Props {
@@ -30,7 +31,11 @@ export const NoteEditorOverlay: React.FC<Props> = ({ note, onChange, onCommit })
         <motion.div
           layoutId={note.id}
           className="sticky-note editor-note"
-          style={{ backgroundColor: note.color || COLORS[0] }}
+          animate={{
+            scale: toolbarMode === 'custom' ? 0.85 : 1,
+          }}
+          transition={{ type: 'spring', stiffness: 350, damping: 25 }}
+          style={{ backgroundColor: note.color || COLORS[0], transformOrigin: 'center' }}
         >
           <textarea
             autoFocus
@@ -38,6 +43,7 @@ export const NoteEditorOverlay: React.FC<Props> = ({ note, onChange, onCommit })
             value={note.text}
             onChange={(e) => onChange({ text: e.target.value })}
             placeholder="Type your brilliant idea..."
+            spellCheck={false}
           />
         </motion.div>
       </div>
@@ -47,7 +53,7 @@ export const NoteEditorOverlay: React.FC<Props> = ({ note, onChange, onCommit })
           className="editor-toolbar"
           layout
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-          style={{ padding: '0 24px' }}
+          style={{ padding: '0 24px', overflow: 'hidden' }}
         >
           <AnimatePresence mode="popLayout">
             {toolbarMode === 'main' && (
@@ -122,13 +128,17 @@ export const NoteEditorOverlay: React.FC<Props> = ({ note, onChange, onCommit })
             {toolbarMode === 'custom' && (
               <motion.div 
                 key="custom"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.15 }}
-                style={{ display: 'flex', gap: 16, alignItems: 'center', minHeight: 64 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.2, delay: 0.15 }}
+                style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'center', minHeight: 64, padding: '24px 0' }}
               >
-                <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+                <HexColorPicker 
+                  color={note.color || '#FFF9B1'} 
+                  onChange={(c) => onChange({ color: c })} 
+                />
+                <div style={{ display: 'flex', gap: 16, alignItems: 'center', width: '100%', padding: '0 8px' }}>
                   <div className="hex-input-wrapper" style={{ margin: 0, width: 120 }}>
                     <span className="hex-hash">#</span>
                     <input 
@@ -136,7 +146,7 @@ export const NoteEditorOverlay: React.FC<Props> = ({ note, onChange, onCommit })
                       onChange={(e) => onChange({ color: '#' + e.target.value })} 
                       className="hex-input"
                       maxLength={6}
-                      autoFocus
+                      spellCheck={false}
                     />
                   </div>
 
