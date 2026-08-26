@@ -11,17 +11,17 @@ interface Props {
 }
 
 const COLORS = [
-  '#FFF9B1', // Yellow
-  '#F4CFDF', // Pink
-  '#D4E4E6', // Blue
-  '#D7ECD9', // Mint
+  '#FFF9B1',
+  '#F4CFDF',
+  '#D4E4E6',
+  '#D7ECD9',
 ];
 
 const TEXT_COLORS = [
-  '#2C2A26', // Default Dark
-  '#EF4444', // Red
-  '#3B82F6', // Blue
-  '#10B981', // Green
+  '#2C2A26',
+  '#EF4444',
+  '#3B82F6',
+  '#10B981',
 ];
 
 export const NoteEditorOverlay: React.FC<Props> = ({ note, onChange, onCommit }) => {

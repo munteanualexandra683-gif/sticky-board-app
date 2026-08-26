@@ -163,7 +163,7 @@ body, html {
 }
 
 .toolbar-icon-btn:hover {
-  background-color: var(--canvas-bg);
+  background-color: #f0f0f0;
   transform: translateY(-3px) scale(1.05); /* Fun hover lift */
   border-color: #e5e5e5;
 }
@@ -256,7 +256,7 @@ body, html {
 }
 
 .editor-icon-btn:hover {
-  background-color: var(--canvas-bg);
+  background-color: #f0f0f0;
   transform: translateY(-2px);
 }
 
