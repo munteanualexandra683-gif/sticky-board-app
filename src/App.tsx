@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useMotionValue, AnimatePresence, animate } from 'framer-motion';
 import { Board } from './components/Board';
 import { Toolbar } from './components/Toolbar';
