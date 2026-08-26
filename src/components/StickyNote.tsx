@@ -50,6 +50,12 @@ export const StickyNote: React.FC<Props> = ({ note, updateNote, bringToFront }) 
         onChange={(e) => updateNote(note.id, { text: e.target.value })}
         placeholder="Type something..."
         spellCheck={false}
+        style={{
+            fontWeight: note.isBold ? 'bold' : 'normal',
+            fontStyle: note.isItalic ? 'italic' : 'normal',
+            textDecoration: note.isUnderline ? 'underline' : 'none',
+            color: note.textColor || 'var(--text-main)',
+        }}
         // Prevent pointer down from bubbling up to the drag handler if they just want to click and type
         onPointerDown={(e) => {
             bringToFront(note.id);

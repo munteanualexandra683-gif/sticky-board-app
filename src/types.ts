@@ -4,4 +4,8 @@ export interface NoteData {
   y: number;
   text: string;
   color?: string;
+  isBold?: boolean;
+  isItalic?: boolean;
+  isUnderline?: boolean;
+  textColor?: string;
 }
