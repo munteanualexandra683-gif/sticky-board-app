@@ -341,3 +341,84 @@ body, html {
   width: 24px !important;
   height: 24px !important;
 }
+
+/* --- Mobile Overlay --- */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--canvas-bg);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  background-image: radial-gradient(var(--canvas-dot) 2px, transparent 2px);
+  background-size: 40px 40px;
+  background-position: center;
+}
+
+.mobile-message {
+  background-color: #F4CFDF; /* Pink from NoteEditorOverlay */
+  padding: 32px 24px;
+  border-radius: 4px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  max-width: 320px;
+  background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+  transform: rotate(-2deg);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mobile-message h2 {
+  margin-top: 0;
+  font-size: 24px;
+  margin-bottom: 12px;
+  color: #FF1493; /* Bright pink text */
+}
+
+.mobile-message p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text-main); /* Black/dark text */
+}
+
+.expandable {
+  max-height: 0;
+  overflow: hidden;
+  animation: expandHeight 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 2s; /* 2 second delay for the scare! */
+}
+
+@keyframes expandHeight {
+  to {
+    max-height: 150px;
+  }
+}
+
+.just-kidding {
+  opacity: 0;
+  animation: fadeInDelay 0.4s ease forwards;
+  animation-delay: 2.3s;
+}
+
+@keyframes fadeInDelay {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-overlay {
+    display: flex;
+  }
+  .app-content {
+    display: none;
+  }
+}

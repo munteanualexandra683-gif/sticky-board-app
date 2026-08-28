@@ -4,6 +4,11 @@ Stickee is a digital sticky-note board built on an infinite canvas. I am buildin
 
 > 🚧 **Work in Progress:** This app is currently under active construction! I am building and pushing new features constantly as I learn.
 
+## Current Features
+- **Infinite Canvas:** Pan and zoom freely across an endless workspace.
+- **Sticky Notes:** Create, edit, and color-code digital sticky notes.
+- **Tactile Physics:** Drag and drop elements with smooth, physics-based interactions.
+
 ## What's Next?
 - **Scrapbook Elements:** The ability to add photos, pins, or stickers.
 - **Multiplayer:** Real-time collaboration so multiple people can use the board at once.

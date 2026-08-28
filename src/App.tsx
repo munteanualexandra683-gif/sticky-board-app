@@ -53,29 +53,47 @@ function App() {
 
   return (
     <>
-      <Board 
-        cameraX={cameraX} 
-        cameraY={cameraY} 
-        cameraScale={cameraScale}
-        notes={notes}
-        updateNote={updateNote}
-        bringToFront={bringToFront}
-      />
-      
-      {/* Hide the main toolbar if we are editing */}
-      <AnimatePresence>
-        {!editingNote && <Toolbar onAddNote={startAddingNote} />}
-      </AnimatePresence>
+      <div className="mobile-overlay">
+        <div className="mobile-message">
+          <h2>Oops!</h2>
+          <div className="text-content">
+            <p>Sorry, no phones allowed!</p>
+            <div className="expandable">
+              <div className="just-kidding">
+                <br/>
+                <p>Just kidding, I just haven't built it yet.</p>
+                <p>See you on desktop! 😊</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <AnimatePresence>
-        {editingNote && (
-           <NoteEditorOverlay 
-              note={editingNote} 
-              onChange={(data) => setEditingNote({ ...editingNote, ...data })} 
-              onCommit={commitNote} 
-           />
-        )}
-      </AnimatePresence>
+      <div className="app-content">
+        <Board 
+          cameraX={cameraX} 
+          cameraY={cameraY} 
+          cameraScale={cameraScale}
+          notes={notes}
+          updateNote={updateNote}
+          bringToFront={bringToFront}
+        />
+        
+        {/* Hide the main toolbar if we are editing */}
+        <AnimatePresence>
+          {!editingNote && <Toolbar onAddNote={startAddingNote} />}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {editingNote && (
+             <NoteEditorOverlay 
+                note={editingNote} 
+                onChange={(data) => setEditingNote({ ...editingNote, ...data })} 
+                onCommit={commitNote} 
+             />
+          )}
+        </AnimatePresence>
+      </div>
     </>
   )
 }

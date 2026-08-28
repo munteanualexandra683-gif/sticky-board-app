@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Preview - Sticky Board</title>
+    <style>
+        :root {
+            --canvas-bg: #F5F1E7;
+            --canvas-dot: rgba(0, 0, 0, 0.05);
+            --text-main: #2C2A26;
+            --note-yellow: #FFF9B1;
+            --shadow-base: rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 25px -5px var(--shadow-base), 0 10px 10px -5px var(--shadow-base);
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: var(--font-sans);
+            color: var(--text-main);
+            background-color: var(--canvas-bg);
+        }
+
+        .mobile-overlay {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--canvas-bg);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            box-sizing: border-box;
+            background-image: radial-gradient(var(--canvas-dot) 2px, transparent 2px);
+            background-size: 40px 40px;
+            background-position: center;
+        }
+
+        .mobile-message {
+            background-color: #F4CFDF; /* Pink from NoteEditorOverlay */
+            padding: 32px 24px;
+            border-radius: 4px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            max-width: 320px;
+            background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+            transform: rotate(-2deg);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .mobile-message h2 {
+            margin-top: 0;
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: #FF1493; /* Bright pink text */
+        }
+
+        .mobile-message p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        .expandable {
+            max-height: 0;
+            overflow: hidden;
+            animation: expandHeight 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: 2s; /* 2 second delay for the scare! */
+        }
+
+        @keyframes expandHeight {
+            to {
+                max-height: 150px;
+            }
+        }
+
+        .just-kidding {
+            opacity: 0;
+            animation: fadeInDelay 0.4s ease forwards;
+            animation-delay: 2.3s;
+        }
+
+        @keyframes fadeInDelay {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="mobile-overlay">
+        <div class="mobile-message">
+            <h2>Oops!</h2>
+            <div class="text-content">
+                <p>Sorry, no phones allowed!</p>
+                <div class="expandable">
+                    <div class="just-kidding">
+                        <br/>
+                        <p>Just kidding, I just haven't built it yet.</p>
+                        <p>See you on desktop! 😊</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
