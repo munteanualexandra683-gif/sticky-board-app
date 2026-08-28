@@ -1,13 +1,13 @@
 :root {
-  --canvas-bg: #F5F1E7; /* Light brown / warm beige */
-  --canvas-dot: rgba(0, 0, 0, 0.05); /* subtle dots */
+  --canvas-bg: #F5F1E7; 
+  --canvas-dot: rgba(0, 0, 0, 0.05); 
   --text-main: #2C2A26;
   --note-yellow: #FFF9B1;
   --shadow-base: rgba(0, 0, 0, 0.08);
   --shadow-sm: 0 4px 6px -1px var(--shadow-base), 0 2px 4px -1px var(--shadow-base);
   --shadow-md: 0 10px 15px -3px var(--shadow-base), 0 4px 6px -2px var(--shadow-base);
   --shadow-lg: 0 20px 25px -5px var(--shadow-base), 0 10px 10px -5px var(--shadow-base);
-  
+
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
@@ -16,7 +16,7 @@ body, html {
   padding: 0;
   width: 100vw;
   height: 100vh;
-  overflow: hidden; /* Prevent native scrolling */
+  overflow: hidden; 
   font-family: var(--font-sans);
   color: var(--text-main);
   background-color: var(--canvas-bg);
@@ -73,13 +73,12 @@ body, html {
   padding: 24px;
   border-radius: 4px;
   box-shadow: var(--shadow-md);
-  /* A subtle paper gradient to make it feel premium */
+
   background-image: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
   display: flex;
   flex-direction: column;
   cursor: grab;
-  /* Very slight rotation for a physical feel */
-  /* We don't apply it here because Framer Motion controls transform, but we could add a nested div */
+
 }
 
 .sticky-note:active {
@@ -100,9 +99,8 @@ body, html {
   cursor: text;
 }
 
-/* --- Toolbar Styles --- */
 .toolbar-container {
-  position: fixed; /* Fixed so it stays in the corner while canvas pans */
+  position: fixed; 
   bottom: 32px;
   right: 32px;
   z-index: 100;
@@ -115,7 +113,7 @@ body, html {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  /* Initial state */
+
   width: 64px;
   height: 64px;
   border-radius: 32px;
@@ -163,8 +161,8 @@ body, html {
 }
 
 .toolbar-icon-btn:hover {
-  background-color: var(--canvas-bg);
-  transform: translateY(-3px) scale(1.05); /* Fun hover lift */
+  background-color: #f0f0f0;
+  transform: translateY(-3px) scale(1.05); 
   border-color: #e5e5e5;
 }
 
@@ -181,10 +179,9 @@ body, html {
 }
 .close-btn:hover {
   color: #333;
-  background-color: #ffe6e6; /* Soft red tint when closing */
+  background-color: #ffe6e6; 
 }
 
-/* --- Note Editor Overlay --- */
 .editor-overlay {
   position: fixed;
   top: 0;
@@ -256,12 +253,12 @@ body, html {
 }
 
 .editor-icon-btn:hover {
-  background-color: var(--canvas-bg);
+  background-color: #f0f0f0;
   transform: translateY(-2px);
 }
 
 .editor-icon-btn.primary {
-  color: #10B981; /* Green check */
+  color: #10B981; 
 }
 .editor-icon-btn.primary:hover {
   background-color: #ECFDF5;
@@ -332,7 +329,6 @@ body, html {
   text-transform: uppercase;
 }
 
-/* react-colorful overrides */
 .react-colorful {
   width: 180px !important;
   height: 180px !important;

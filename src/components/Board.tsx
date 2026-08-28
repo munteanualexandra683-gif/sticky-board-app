@@ -11,16 +11,21 @@ interface Props {
   notes: NoteData[];
   updateNote: (id: string, data: Partial<NoteData>) => void;
   bringToFront: (id: string) => void;
+  selectedNoteId: string | null;
+  onSelectNote: (id: string | null) => void;
+  onEditNote: (id: string) => void;
+  onDeleteNote: (id: string) => void;
 }
 
 export const Board: React.FC<Props> = ({ 
   cameraX, cameraY, cameraScale, 
-  notes, updateNote, bringToFront 
+  notes, updateNote, bringToFront,
+  selectedNoteId, onSelectNote, onEditNote, onDeleteNote
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Add some spring physics to the panning for a smoother feel
-  const springConfig = { damping: 40, stiffness: 100 }; // Slower, heavier spring
+
+  const springConfig = { damping: 40, stiffness: 100 };
   const springX = useSpring(cameraX, springConfig);
   const springY = useSpring(cameraY, springConfig);
   const springScale = useSpring(cameraScale, springConfig);
@@ -28,9 +33,9 @@ export const Board: React.FC<Props> = ({
   useGesture(
     {
       onDrag: ({ delta: [dx, dy] }) => {
-        // Reduced pan sensitivity for heavy feel
-        cameraX.set(cameraX.get() + (dx * 0.5));
-        cameraY.set(cameraY.get() + (dy * 0.5));
+
+        cameraX.set(cameraX.get() + (dx * 0.25));
+        cameraY.set(cameraY.get() + (dy * 0.25));
       },
       onPinch: ({ offset: [s] }) => {
         cameraScale.set(s);
@@ -40,13 +45,13 @@ export const Board: React.FC<Props> = ({
         
         if (ctrlKey) {
             const currentScale = cameraScale.get();
-            // Greatly reduced zoom sensitivity
-            const zoomFactor = Math.exp(-dy * 0.001);
+
+            const zoomFactor = Math.exp(-dy * 0.0005);
             const newScale = Math.max(0.1, Math.min(currentScale * zoomFactor, 5));
             cameraScale.set(newScale);
         } else {
-            cameraX.set(cameraX.get() - (dx * 0.5));
-            cameraY.set(cameraY.get() - (dy * 0.5));
+            cameraX.set(cameraX.get() - (dx * 0.25));
+            cameraY.set(cameraY.get() - (dy * 0.25));
         }
       }
     },
@@ -76,6 +81,11 @@ export const Board: React.FC<Props> = ({
           y: springY,
           scale: springScale,
         }}
+        onPointerDown={(e) => {
+          if (e.target === e.currentTarget) {
+             onSelectNote(null);
+          }
+        }}
       >
         {notes.map(note => (
            <StickyNote 
@@ -83,6 +93,10 @@ export const Board: React.FC<Props> = ({
               note={note} 
               updateNote={updateNote} 
               bringToFront={bringToFront} 
+              isSelected={note.id === selectedNoteId}
+              onSelect={() => onSelectNote(note.id)}
+              onEdit={() => onEditNote(note.id)}
+              onDelete={() => onDeleteNote(note.id)}
            />
         ))}
       </motion.div>
