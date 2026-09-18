@@ -134,12 +134,7 @@ export const Toolbar: React.FC<Props> = ({ onAddNote, onAddPicture }) => {
                   </button>
 
                   <button 
-                    className="toolbar-btn primary" 
-                    style={{ 
-                      display: 'flex', gap: 6, alignItems: 'center', 
-                      padding: '0 12px', fontSize: '13px', fontWeight: '600', 
-                      color: '#8B5CF6', backgroundColor: '#F3F4F6', borderRadius: '16px', height: '36px',
-                    }}
+                    className="toolbar-text-btn" 
                     onClick={() => {
                       onAddPicture('polaroid');
                       setIsOpen(false);
@@ -147,16 +142,12 @@ export const Toolbar: React.FC<Props> = ({ onAddNote, onAddPicture }) => {
                     }}
                     title="Polaroid Frame"
                   >
-                    <Camera size={16} /> Polaroid
+                    <Camera size={20} color="#8B5CF6" />
+                    <span style={{ color: '#8B5CF6' }}>Polaroid</span>
                   </button>
                   
                   <button 
-                    className="toolbar-btn primary" 
-                    style={{ 
-                      display: 'flex', gap: 6, alignItems: 'center', 
-                      padding: '0 12px', fontSize: '13px', fontWeight: '600', 
-                      color: '#6366F1', backgroundColor: '#F3F4F6', borderRadius: '16px', height: '36px',
-                    }}
+                    className="toolbar-text-btn" 
                     onClick={() => {
                       onAddPicture('image');
                       setIsOpen(false);
@@ -164,7 +155,8 @@ export const Toolbar: React.FC<Props> = ({ onAddNote, onAddPicture }) => {
                     }}
                     title="Plain Image"
                   >
-                    <ImageIcon size={16} /> Plain
+                    <ImageIcon size={20} color="#6366F1" />
+                    <span style={{ color: '#6366F1' }}>Plain</span>
                   </button>
                   <div className="toolbar-divider" />
                 </motion.div>

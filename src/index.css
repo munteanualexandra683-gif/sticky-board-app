@@ -213,6 +213,29 @@ body, html {
   border-color: #e5e5e5;
 }
 
+.toolbar-text-btn {
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 22px;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-main);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toolbar-text-btn:hover {
+  background-color: #f0f0f0;
+  transform: translateY(-3px) scale(1.02); 
+  border-color: #e5e5e5;
+}
+
 .toolbar-divider {
   width: 2px;
   height: 24px;
