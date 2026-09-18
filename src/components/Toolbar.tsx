@@ -46,7 +46,7 @@ export const Toolbar: React.FC<Props> = ({ onAddNote, onAddPicture }) => {
     >
       <motion.div
         animate={{
-          width: isOpen ? (isPictureMenuOpen ? 340 : 260) : 64,
+          width: isOpen ? (isPictureMenuOpen ? 380 : 260) : 64,
           height: 64,
           borderRadius: 32,
         }}
