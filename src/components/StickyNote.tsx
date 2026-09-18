@@ -75,8 +75,8 @@ export const StickyNote: React.FC<Props> = ({ note, updateNote, bringToFront, is
       animate={{ 
         x: note.x, 
         y: note.y, 
-        scale: isSelected && !isMoving ? 1.03 : 1,
-        zIndex: isSelected ? 50 : 1
+        scale: 1,
+        zIndex: isSelected ? 9999 : (note.zIndex || 1)
       }}
       transition={{ 
          type: 'spring', 
@@ -88,7 +88,7 @@ export const StickyNote: React.FC<Props> = ({ note, updateNote, bringToFront, is
       }}
     >
       <motion.div
-        layoutId={note.id}
+        layoutId={isTextNode ? note.id : undefined}
         className={
           isPolaroidNode ? "polaroid-note" : 
           isImageNode ? "image-note" : 

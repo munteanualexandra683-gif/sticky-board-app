@@ -10,4 +10,5 @@ export interface NoteData {
   textColor?: string;
   type?: 'text' | 'image' | 'polaroid';
   imageUrl?: string;
+  zIndex?: number;
 }

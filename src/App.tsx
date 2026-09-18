@@ -110,9 +110,8 @@ function App() {
 
   const bringToFront = (id: string) => {
     setNotes(prev => {
-      const noteToMove = prev.find(n => n.id === id);
-      if (!noteToMove) return prev;
-      return [...prev.filter(n => n.id !== id), noteToMove];
+      const maxZ = Math.max(0, ...prev.map(n => n.zIndex || 1));
+      return prev.map(note => note.id === id ? { ...note, zIndex: maxZ + 1 } : note);
     });
   };
 
