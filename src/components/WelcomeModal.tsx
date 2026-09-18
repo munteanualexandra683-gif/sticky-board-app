@@ -86,13 +86,13 @@ export const WelcomeModal: React.FC<Props> = ({ onClose }) => {
                 <li><strong style={{ color: '#DB2777' }}>Infinite Canvas:</strong> Pan and zoom freely across an endless workspace.</li>
                 <li><strong style={{ color: '#DB2777' }}>Smart Notes:</strong> Create, edit, and color-code your digital sticky notes.</li>
                 <li><strong style={{ color: '#DB2777' }}>Tactile Physics:</strong> Drag and drop elements with highly satisfying interactions.</li>
+                <li><strong style={{ color: '#DB2777' }}>Scrapbooking:</strong> Add photos, pins, and stickers.</li>
               </ul>
             </div>
 
             <div style={{ flex: 1 }}>
               <h3 style={{ margin: '0 0 8px 0', fontSize: '1.05rem', color: '#111' }}>Sneak peek at the roadmap:</h3>
               <ul style={{ paddingLeft: '20px', margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <li><strong style={{ color: '#DB2777' }}>Scrapbooking:</strong> Add photos, pins, and stickers.</li>
                 <li><strong style={{ color: '#DB2777' }}>Drawing:</strong> Draw freely directly on your notes.</li>
                 <li><strong style={{ color: '#DB2777' }}>Multiplayer:</strong> Collaborate in real-time.</li>
                 <li><strong style={{ color: '#DB2777' }}>Custom Themes:</strong> Personalize your workspace.</li>
