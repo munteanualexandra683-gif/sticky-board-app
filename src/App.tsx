@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMotionValue, AnimatePresence, animate } from 'framer-motion';
 import { Board } from './components/Board';
 import { Toolbar } from './components/Toolbar';
@@ -8,7 +8,17 @@ import { WelcomeModal } from './components/WelcomeModal';
 import type { NoteData } from './types';
 
 function App() {
-  const [notes, setNotes] = useState<NoteData[]>([]);
+  const [notes, setNotes] = useState<NoteData[]>(() => {
+    const saved = localStorage.getItem('stickee_notes');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse notes from local storage', e);
+      }
+    }
+    return [];
+  });
   const [editingNote, setEditingNote] = useState<NoteData | null>(null);
   const [selectedNoteId, setSelectedNoteId] = useState<string | null>(null);
   const [showWelcome, setShowWelcome] = useState(() => {
@@ -18,6 +28,10 @@ function App() {
   const cameraX = useMotionValue(0);
   const cameraY = useMotionValue(0);
   const cameraScale = useMotionValue(1);
+
+  useEffect(() => {
+    localStorage.setItem('stickee_notes', JSON.stringify(notes));
+  }, [notes]);
 
   const handleCloseWelcome = () => {
     setShowWelcome(false);
