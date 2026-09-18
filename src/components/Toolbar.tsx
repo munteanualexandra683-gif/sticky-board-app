@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, StickyNote, Image as ImageIcon, Heart, ChevronLeft } from 'lucide-react';
+import { STICKERS } from '../data/stickers';
 
 const PolaroidIcon = ({ size = 20, color = 'currentColor' }) => (
   <svg 
@@ -22,11 +23,13 @@ const PolaroidIcon = ({ size = 20, color = 'currentColor' }) => (
 interface Props {
   onAddNote: () => void;
   onAddPicture: (type: 'image' | 'polaroid') => void;
+  onAddSticker: (url: string) => void;
 }
 
-export const Toolbar: React.FC<Props> = ({ onAddNote, onAddPicture }) => {
+export const Toolbar: React.FC<Props> = ({ onAddNote, onAddPicture, onAddSticker }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isPictureMenuOpen, setIsPictureMenuOpen] = useState(false);
+  const [isStickerMenuOpen, setIsStickerMenuOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<React.ReactNode | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -122,11 +125,10 @@ export const Toolbar: React.FC<Props> = ({ onAddNote, onAddPicture }) => {
                   <button 
                     className="toolbar-icon-btn" 
                     onClick={() => {
-                      showToast(
-                        <>Oops! This will let you add <span style={{ color: '#EF4444', fontWeight: 'bold' }}>stickers</span>, but it's under development.</>
-                      );
+                      setIsStickerMenuOpen(!isStickerMenuOpen);
+                      setToastMessage(null);
                     }}
-                    title="Add Sticker (Coming Soon)"
+                    title="Add Sticker"
                   >
                     <Heart size={22} color="#EF4444" />
                   </button>
@@ -189,6 +191,7 @@ export const Toolbar: React.FC<Props> = ({ onAddNote, onAddPicture }) => {
             if (isOpen) {
               setIsOpen(false);
               setIsPictureMenuOpen(false);
+              setIsStickerMenuOpen(false);
             } else {
               setIsOpen(true);
             }
@@ -232,6 +235,32 @@ export const Toolbar: React.FC<Props> = ({ onAddNote, onAddPicture }) => {
             }}
           >
             {toastMessage}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isStickerMenuOpen && isOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 10 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 400 }}
+            className="sticker-menu-popup"
+          >
+            {STICKERS.map((sticker, idx) => (
+              <button
+                key={idx}
+                className="sticker-option-btn"
+                onClick={() => {
+                  onAddSticker(sticker);
+                  setIsStickerMenuOpen(false);
+                  setIsOpen(false);
+                }}
+              >
+                <img src={sticker} alt="Sticker" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+              </button>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>

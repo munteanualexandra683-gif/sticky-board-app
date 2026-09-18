@@ -8,7 +8,9 @@ export interface NoteData {
   isItalic?: boolean;
   isUnderline?: boolean;
   textColor?: string;
-  type?: 'text' | 'image' | 'polaroid';
+  type?: 'text' | 'image' | 'polaroid' | 'sticker';
   imageUrl?: string;
   zIndex?: number;
+  scale?: number;
+  rotation?: number;
 }

@@ -87,6 +87,22 @@ function App() {
     input.click();
   };
 
+  const handleAddSticker = (stickerUrl: string) => {
+    const worldX = -cameraX.get() / cameraScale.get();
+    const worldY = -cameraY.get() / cameraScale.get();
+
+    const newSticker: NoteData = {
+      id: Math.random().toString(36).substr(2, 9),
+      text: '',
+      x: worldX + (Math.random() * 40 - 20),
+      y: worldY + (Math.random() * 40 - 20),
+      type: 'sticker',
+      imageUrl: stickerUrl
+    };
+    setNotes(prev => [...prev, newSticker]);
+    bringToFront(newSticker.id);
+  };
+
   const handleEditNote = (id: string) => {
     const noteToEdit = notes.find(n => n.id === id);
     if (noteToEdit) {
@@ -214,7 +230,11 @@ function App() {
         <AnimatePresence>
           {!editingNote && (
             <>
-              <Toolbar onAddNote={startAddingNote} onAddPicture={handleAddPicture} />
+              <Toolbar 
+                onAddNote={startAddingNote} 
+                onAddPicture={handleAddPicture} 
+                onAddSticker={handleAddSticker}
+              />
               <TopRightToolbar onFitToScreen={handleFitToScreen} />
             </>
           )}
