@@ -1,6 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, StickyNote, Image as ImageIcon, Heart, Camera, ChevronLeft } from 'lucide-react';
+import { Plus, StickyNote, Image as ImageIcon, Heart, ChevronLeft } from 'lucide-react';
+
+const PolaroidIcon = ({ size = 20, color = 'currentColor' }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg"
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke={color} 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round"
+  >
+    <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
+    <rect x="7" y="5" width="10" height="10" />
+  </svg>
+);
 
 interface Props {
   onAddNote: () => void;
@@ -142,7 +159,7 @@ export const Toolbar: React.FC<Props> = ({ onAddNote, onAddPicture }) => {
                     }}
                     title="Polaroid Frame"
                   >
-                    <Camera size={20} color="#8B5CF6" />
+                    <PolaroidIcon size={20} color="#8B5CF6" />
                     <span style={{ color: '#8B5CF6' }}>Polaroid</span>
                   </button>
                   
