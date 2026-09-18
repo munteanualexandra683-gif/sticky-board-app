@@ -42,7 +42,11 @@ export const StickyNote: React.FC<Props> = ({ note, updateNote, bringToFront, is
   }, [isSelected]);
 
   const baseColor = note.color || '#FFF9B1';
-  const outlineColor = getDarkerShade(baseColor);
+  const outlineColor = note.type === 'image' || note.type === 'polaroid' ? '#8B5CF6' : getDarkerShade(baseColor);
+  
+  const isImageNode = note.type === 'image';
+  const isPolaroidNode = note.type === 'polaroid';
+  const isTextNode = !note.type || note.type === 'text';
 
   return (
     <motion.div
@@ -85,30 +89,43 @@ export const StickyNote: React.FC<Props> = ({ note, updateNote, bringToFront, is
     >
       <motion.div
         layoutId={note.id}
-        className="sticky-note"
+        className={
+          isPolaroidNode ? "polaroid-note" : 
+          isImageNode ? "image-note" : 
+          "sticky-note"
+        }
         style={{
-            backgroundColor: baseColor,
+            backgroundColor: isTextNode ? baseColor : isPolaroidNode ? '#fff' : 'transparent',
             outline: isMoving ? `3px solid ${outlineColor}` : `0px solid ${outlineColor}`,
             outlineOffset: '2px',
             cursor: isMoving ? 'grab' : 'default',
             transition: 'outline 0.2s, outline-offset 0.2s',
-            boxShadow: isSelected ? '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)' : 'var(--shadow-md)'
+            boxShadow: isSelected ? '0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)' : (isImageNode ? 'none' : 'var(--shadow-md)')
         }}
       >
-        <textarea
-          className="sticky-note-textarea"
-          value={note.text}
-          readOnly
-          placeholder="Type something..."
-          spellCheck={false}
-          style={{
-              fontWeight: note.isBold ? 'bold' : 'normal',
-              fontStyle: note.isItalic ? 'italic' : 'normal',
-              textDecoration: note.isUnderline ? 'underline' : 'none',
-              color: note.textColor || 'var(--text-main)',
-              pointerEvents: 'none' 
-          }}
-        />
+        {isTextNode ? (
+          <textarea
+            className="sticky-note-textarea"
+            value={note.text}
+            readOnly
+            placeholder="Type something..."
+            spellCheck={false}
+            style={{
+                fontWeight: note.isBold ? 'bold' : 'normal',
+                fontStyle: note.isItalic ? 'italic' : 'normal',
+                textDecoration: note.isUnderline ? 'underline' : 'none',
+                color: note.textColor || 'var(--text-main)',
+                pointerEvents: 'none' 
+            }}
+          />
+        ) : (
+          <img 
+            src={note.imageUrl} 
+            alt="Board Item" 
+            className={isPolaroidNode ? "polaroid-img" : "normal-img"} 
+            draggable={false}
+          />
+        )}
       </motion.div>
 
       <AnimatePresence>
@@ -134,18 +151,21 @@ export const StickyNote: React.FC<Props> = ({ note, updateNote, bringToFront, is
             }}
             onPointerDown={(e) => e.stopPropagation()}
           >
-            <button 
-              className="editor-icon-btn" 
-              onClick={(e) => {
-                e.stopPropagation();
-                onEdit();
-              }} 
-              title="Edit Note"
-            >
-              <Pencil size={20} />
-            </button>
-            
-            <div className="toolbar-divider" />
+            {isTextNode && (
+              <>
+                <button 
+                  className="editor-icon-btn" 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit();
+                  }} 
+                  title="Edit Note"
+                >
+                  <Pencil size={20} />
+                </button>
+                <div className="toolbar-divider" />
+              </>
+            )}
             
             <button 
               className="editor-icon-btn" 

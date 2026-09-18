@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, StickyNote, Image as ImageIcon, Heart } from 'lucide-react';
+import { Plus, StickyNote, Image as ImageIcon, Heart, Camera, ChevronLeft } from 'lucide-react';
 
 interface Props {
   onAddNote: () => void;
+  onAddPicture: (type: 'image' | 'polaroid') => void;
 }
 
-export const Toolbar: React.FC<Props> = ({ onAddNote }) => {
+export const Toolbar: React.FC<Props> = ({ onAddNote, onAddPicture }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPictureMenuOpen, setIsPictureMenuOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<React.ReactNode | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -44,7 +46,7 @@ export const Toolbar: React.FC<Props> = ({ onAddNote }) => {
     >
       <motion.div
         animate={{
-          width: isOpen ? 260 : 64,
+          width: isOpen ? (isPictureMenuOpen ? 340 : 260) : 64,
           height: 64,
           borderRadius: 32,
         }}
@@ -67,43 +69,107 @@ export const Toolbar: React.FC<Props> = ({ onAddNote }) => {
               className="toolbar-menu"
               style={{ paddingRight: 0 }}
             >
-              <button 
-                className="toolbar-icon-btn" 
-                onClick={() => {
-                  onAddNote();
-                  setIsOpen(false);
-                  setToastMessage(null);
-                }}
-                title="Add Sticky Note"
-              >
-                <StickyNote size={22} color="#EAB308" />
-              </button>
-              
-              <button 
-                className="toolbar-icon-btn" 
-                onClick={() => {
-                  showToast(
-                    <>Oops! This will let you add <span style={{ color: '#8B5CF6', fontWeight: 'bold' }}>pictures</span>, but it's under development.</>
-                  );
-                }}
-                title="Add Picture (Coming Soon)"
-              >
-                <ImageIcon size={22} color="#8B5CF6" />
-              </button>
-              
-              <button 
-                className="toolbar-icon-btn" 
-                onClick={() => {
-                  showToast(
-                    <>Oops! This will let you add <span style={{ color: '#EF4444', fontWeight: 'bold' }}>stickers</span>, but it's under development.</>
-                  );
-                }}
-                title="Add Sticker (Coming Soon)"
-              >
-                <Heart size={22} color="#EF4444" />
-              </button>
-              
-              <div className="toolbar-divider" />
+            <AnimatePresence mode="wait">
+              {!isPictureMenuOpen ? (
+                <motion.div
+                  key="main-menu"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.15 }}
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', paddingRight: 0 }}
+                >
+                  <button 
+                    className="toolbar-icon-btn" 
+                    onClick={() => {
+                      onAddNote();
+                      setIsOpen(false);
+                      setToastMessage(null);
+                    }}
+                    title="Add Sticky Note"
+                  >
+                    <StickyNote size={22} color="#EAB308" />
+                  </button>
+                  
+                  <button 
+                    className="toolbar-icon-btn" 
+                    onClick={() => {
+                      setIsPictureMenuOpen(true);
+                      setToastMessage(null);
+                    }}
+                    title="Add Picture"
+                  >
+                    <ImageIcon size={22} color="#8B5CF6" />
+                  </button>
+                  
+                  <button 
+                    className="toolbar-icon-btn" 
+                    onClick={() => {
+                      showToast(
+                        <>Oops! This will let you add <span style={{ color: '#EF4444', fontWeight: 'bold' }}>stickers</span>, but it's under development.</>
+                      );
+                    }}
+                    title="Add Sticker (Coming Soon)"
+                  >
+                    <Heart size={22} color="#EF4444" />
+                  </button>
+                  <div className="toolbar-divider" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="picture-menu"
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.15 }}
+                  style={{ display: 'flex', alignItems: 'center', gap: '12px', width: '100%', paddingLeft: '8px' }}
+                >
+                  <button 
+                    className="toolbar-icon-btn" 
+                    onClick={() => setIsPictureMenuOpen(false)}
+                    title="Back"
+                    style={{ color: '#9CA3AF', flexShrink: 0 }}
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+
+                  <button 
+                    className="toolbar-btn primary" 
+                    style={{ 
+                      display: 'flex', gap: 6, alignItems: 'center', 
+                      padding: '0 12px', fontSize: '13px', fontWeight: '600', 
+                      color: '#8B5CF6', backgroundColor: '#F3F4F6', borderRadius: '16px', height: '36px',
+                    }}
+                    onClick={() => {
+                      onAddPicture('polaroid');
+                      setIsOpen(false);
+                      setIsPictureMenuOpen(false);
+                    }}
+                    title="Polaroid Frame"
+                  >
+                    <Camera size={16} /> Polaroid
+                  </button>
+                  
+                  <button 
+                    className="toolbar-btn primary" 
+                    style={{ 
+                      display: 'flex', gap: 6, alignItems: 'center', 
+                      padding: '0 12px', fontSize: '13px', fontWeight: '600', 
+                      color: '#6366F1', backgroundColor: '#F3F4F6', borderRadius: '16px', height: '36px',
+                    }}
+                    onClick={() => {
+                      onAddPicture('image');
+                      setIsOpen(false);
+                      setIsPictureMenuOpen(false);
+                    }}
+                    title="Plain Image"
+                  >
+                    <ImageIcon size={16} /> Plain
+                  </button>
+                  <div className="toolbar-divider" />
+                </motion.div>
+              )}
+            </AnimatePresence>
             </motion.div>
           )}
         </AnimatePresence>
@@ -111,7 +177,12 @@ export const Toolbar: React.FC<Props> = ({ onAddNote }) => {
         <button
           className="toolbar-btn primary"
           onClick={() => {
-            setIsOpen(!isOpen);
+            if (isOpen) {
+              setIsOpen(false);
+              setIsPictureMenuOpen(false);
+            } else {
+              setIsOpen(true);
+            }
             setToastMessage(null);
           }}
           style={{ width: 64, flexShrink: 0, borderRadius: '50%' }}

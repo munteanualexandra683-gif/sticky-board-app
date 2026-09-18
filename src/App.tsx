@@ -36,9 +36,41 @@ function App() {
       x: worldX, 
       y: worldY,
       text: '',
-      color: '#FFF9B1'
+      color: '#FFF9B1',
+      type: 'text'
     });
     setSelectedNoteId(null);
+  };
+
+  const handleAddPicture = (type: 'image' | 'polaroid') => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const imageUrl = event.target?.result as string;
+          const worldX = -cameraX.get() / cameraScale.get();
+          const worldY = -cameraY.get() / cameraScale.get();
+
+          const newPicture: NoteData = {
+            id: Math.random().toString(36).substr(2, 9),
+            x: worldX,
+            y: worldY,
+            text: '',
+            type,
+            imageUrl
+          };
+
+          setNotes(prev => [...prev, newPicture]);
+          setSelectedNoteId(null);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
   };
 
   const handleEditNote = (id: string) => {
@@ -169,7 +201,7 @@ function App() {
         <AnimatePresence>
           {!editingNote && (
             <>
-              <Toolbar onAddNote={startAddingNote} />
+              <Toolbar onAddNote={startAddingNote} onAddPicture={handleAddPicture} />
               <TopRightToolbar onFitToScreen={handleFitToScreen} />
             </>
           )}

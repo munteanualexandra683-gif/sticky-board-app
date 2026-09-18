@@ -8,4 +8,6 @@ export interface NoteData {
   isItalic?: boolean;
   isUnderline?: boolean;
   textColor?: string;
+  type?: 'text' | 'image' | 'polaroid';
+  imageUrl?: string;
 }
